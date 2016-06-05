@@ -10,7 +10,7 @@ config = {
 	'download_url' : 'Where to download it',
 	'author_email' : 'amezen1@gmail.com',
 	'version' : '0.1',
-	'install_requires' : ['nose'],
+	'install_requires' : ['nose','lpthw','requests'],
 	'packages' : ['SquidWord'],
 	'scripts' : [],
 	'name' : 'SquidWord'
