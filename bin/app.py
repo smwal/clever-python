@@ -132,12 +132,7 @@ class User(object):
 # will soon contain the homepage for SquidWord!
 class Index(object):
     def GET(self):
-    	return render.index(greeting="HellO!")
-        
-    def POST(self):
-     	form = web.input(name="Nobody", greet="Hello")
-        greeting = "%s, %s" % (form.greet, form.name)
-        return render.index(greeting = greeting)
+    	return render.index()
 
 # This class defines what happens when the Instant Login flow is initiated - when a user is
 # redirected to my redirect URI
