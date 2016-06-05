@@ -10,7 +10,7 @@ urls = (
 
 client_id=os.environ['CLEVER_CLIENT_ID']
 client_secret=os.environ['CLEVER_CLIENT_SECRET']
-redirect_uri="http://localhost:8080/oauth/clever/"
+redirect_uri="https://squidword.herokuapp.com/"
 
 app = web.application(urls, globals())
 
