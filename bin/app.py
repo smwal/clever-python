@@ -3,9 +3,9 @@ import os
 import requests
 
 urls = (
-  '/', 'Index',
-  '/oauth/clever/','IL', #makes a valid redirect URI
-  '/home/','home' # a page for logged-in users
+	'/', 'Index',
+	'/oauth/clever/','IL', #makes a valid redirect URI
+	'/home/','home' # a page for logged-in users
 )
 
 client_id=os.environ['CLEVER_CLIENT_ID']
@@ -46,21 +46,21 @@ def cleverGET(endpoint, token):
 # This function takes in a code from the redirect URI and attempts to exchange it for a 
 # bearer token.
 def getToken(code):
-		api_endpoint = 'https://clever.com/oauth/tokens'
-		data = {
-			"code":code,
-			"grant_type":"authorization_code",
-			"redirect_uri":redirect_uri
-		}
+	api_endpoint = 'https://clever.com/oauth/tokens'
+	data = {
+		"code":code,
+		"grant_type":"authorization_code",
+		"redirect_uri":redirect_uri
+	}
 
-		r = cleverPOST(api_endpoint, data)
-		
-		if r.status_code == 200:
-			token = r.json()['access_token']
-			return token
-		else:
-			print "POST attempt failed"
-			return None
+	r = cleverPOST(api_endpoint, data)
+	
+	if r.status_code == 200:
+		token = r.json()['access_token']
+		return token
+	else:
+		print "POST attempt failed"
+		return None
 
 # This Class defines users as they log in. The most important information we'll need for each
 # user is their Clever ID ('id'), District ID ('district'), and user type ('type')
@@ -131,8 +131,8 @@ class User(object):
 # This class defines the page at http://localhost:8080/ - currently a form to fill out, but
 # will soon contain the homepage for SquidWord!
 class Index(object):
-    def GET(self):
-    	return render.index()
+	def GET(self):
+		return render.index()
 
 # This class defines what happens when the Instant Login flow is initiated - when a user is
 # redirected to my redirect URI
