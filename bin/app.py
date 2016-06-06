@@ -39,9 +39,8 @@ def cleverGET(endpoint, token):
 
 	if r.status_code == 200:
 		return r.json()
-	else:
-		print r.text
-		return None
+	print r.text
+	return None
 
 # This function takes in a code from the redirect URI and attempts to exchange it for a 
 # bearer token.
@@ -58,9 +57,8 @@ def getToken(code):
 	if r.status_code == 200:
 		token = r.json()['access_token']
 		return token
-	else:
-		print "POST attempt failed"
-		return None
+	print "POST attempt failed"
+	return None
 
 # This Class defines users as they log in. The most important information we'll need for each
 # user is their Clever ID ('id'), District ID ('district'), and user type ('type')
@@ -105,24 +103,24 @@ class User(object):
 		# user's data
 		r = cleverGET(self.endpoint, self.token)
 
-		if r != None:
-			print "Success!"
-
-			# First name and last name are required fields in the API, so I don't need to do 
-			# any checks to make sure that this data exists - no users will exist without
-			# first and last name
-			self.name['first'] = r['data']['name']['first']
-			self.name['last'] = r['data']['name']['last']
-
-			# Middle name is optional, so we check to make sure it exists before attempting
-			# to pull that data from the JSON object. If not, leave that as None
-			if 'middle' in r['data']['name']:
-				self.name['middle'] = r['data']['name']['middle']
-
-			return self
-		else:
+		if r == None:
 			print "Failure :("
-	
+			return None
+		print "Success!"
+
+		# First name and last name are required fields in the API, so I don't need to do 
+		# any checks to make sure that this data exists - no users will exist without
+		# first and last name
+		self.name['first'] = r['data']['name']['first']
+		self.name['last'] = r['data']['name']['last']
+
+		# Middle name is optional, so we check to make sure it exists before attempting
+		# to pull that data from the JSON object. If not, leave that as None
+		if 'middle' in r['data']['name']:
+			self.name['middle'] = r['data']['name']['middle']
+
+		return self
+
 	# Because I'm handling all user creation tasks in __new__, this is just to confirm that 
 	# the user's been created
 	def __init__(self):
@@ -155,32 +153,31 @@ class IL(object):
 			return "No Valid Code"
 		
 		# Now that we have a valid code, we can exchange it for a bearer token.
-		else:
-			ilToken = getToken(form.code)
+		ilToken = getToken(form.code)
 
-			# If the token exchange fails, the user will not be able to log in. The exchange
-			# can fail if:
-			# 	* My client id and secret don't match what's in Clever's database
-			#	* The code has expired (codes are valid for five minutes)
-			#	* The code has already been successfully exchanged for a token
-			#	* Clever is down
-			if ilToken == None:
-				return "Token request fail"
-			else:
-				print "Received Token"
+		# If the token exchange fails, the user will not be able to log in. The exchange
+		# can fail if:
+		# 	* My client id and secret don't match what's in Clever's database
+		#	* The code has expired (codes are valid for five minutes)
+		#	* The code has already been successfully exchanged for a token
+		#	* Clever is down
+		if ilToken == None:
+			return "Token request fail"
+		print "Received Token"
 
-				me = cleverGET('https://api.clever.com/me/',ilToken)
+		me = cleverGET('https://api.clever.com/me/',ilToken)
 				
-				print me
-				if me == None:
-					return "Request failed :("
-				else:
-					newUser = User(me, ilToken)
+		print me
 
-					firstName = newUser.name['first']
-					userType = newUser.user_type
+		if me == None:
+			return "Request failed :("
 
-					return render.home(firstName,userType)
+		newUser = User(me, ilToken)
+
+		firstName = newUser.name['first']
+		userType = newUser.user_type
+
+		return render.home(firstName,userType)
 
 
 if __name__ == "__main__":
