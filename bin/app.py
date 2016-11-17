@@ -163,7 +163,7 @@ class IL(object):
 		#	* Clever is down
 		if ilToken == None:
 			return "Token request fail"
-		print "Received Token"
+		print "Received Token %s" % (ilToken)
 
 		me = cleverGET('https://api.clever.com/me/',ilToken)
 				
