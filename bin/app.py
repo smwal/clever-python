@@ -79,7 +79,7 @@ class User(object):
 		print
 		# Pulling Clever ID, District ID and User Type from the JSON response
 		self.cleverID = response['data']['id']
-		#self.districtID = response['data']['district'] // Removing requirement because library responses don't contain district ID
+		# self.districtID = response['data']['district'] // Removing requirement because library responses don't contain district ID
 		self.user_type = response['data']['type']
 
 		# Getting the right endpoint in the Data API for the user's Type
