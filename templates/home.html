@@ -1,7 +1,10 @@
-$def with (firstName, user_type)
+{% extends "layout.html" %}
+{% block content %}
 
-<h1>Welcome, $firstName!</h1>
+<h1>Welcome, {{ firstName }}!</h1>
 
-<p>You are logged in as a $user_type.</p>
+<p>You are logged in as a {{ userType }}.</p>
 
 <img src="/static/loading2.gif" alt="squidooop">
+
+{% endblock %}

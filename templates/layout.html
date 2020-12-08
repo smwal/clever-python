@@ -1,5 +1,3 @@
-$def with (content)
-
 <html>
 <head>
 	<title>SquidWord</title>
@@ -8,7 +6,7 @@ $def with (content)
 
 <img src="/static/logo.gif" alt="SquidWord">
 
-$:content
+{% block content %}{% endblock %}
 
 </body>
 </html>
