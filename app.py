@@ -182,7 +182,7 @@ def code_exchange():
         return "Token request fail"
     print("Received Token %s" % ilToken)
 
-    me = cleverGET('https://api.clever.com/me/',ilToken)
+    me = cleverGET('https://api.clever.com/v2.1/me/',ilToken)
 				
     print(me)
 

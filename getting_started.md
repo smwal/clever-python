@@ -1,4 +1,4 @@
-Create a Clever dev application and set the redirect URI to `http://127.0.0.1:5000`. Enable all user types.
+Create a Clever dev application and set the redirect URI to `http://127.0.0.1:5000/oauth/clever/`. Enable all user types.
 
 Clone the repository using the following command:
 `git clone https://github.com/zwalchuk/squidword.git`
@@ -28,4 +28,4 @@ Set additional environment variables:
 Back in your terminal, kick off the `app.py` script:
 `python app.py`
 
-Navigate to `http://127.0.0.1:5000` in your browser, then try logging in with a Clever Library user.
+Navigate to `http://127.0.0.1:5000` in your browser, then try logging in with a Clever Library user (district 5b2ad81a709e300001e2cd7a)
