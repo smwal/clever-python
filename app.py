@@ -74,8 +74,9 @@ def new_state():
 # user is their Clever ID ('id') and user type ('type')
 class User(object):
 
-	cleverID = None
+	userID = None
 	user_type = None
+	user_role = None
 
 	endpoint = None
 	token = None
@@ -86,14 +87,14 @@ class User(object):
 		self.token = token
 
 		# Pulling Clever ID and User Type from the JSON response
-		self.cleverID = response['data']['id']
+		self.userID = response['data']['id']
 		self.user_type = response['data']['type']
 
 		# Getting the right endpoint in the Data API for the user's Type
-		if self.user_type in {'student', 'teacher', 'school_admin', 'district_admin'}:
+		if self.user_type in {'user'}:
 			# Note the first placeholder is '%ss' - user_type is singular, but the endpoints
 			# use the plural form
-			self.endpoint = 'https://api.clever.com/v2.1/%ss/%s' % (self.user_type, self.cleverID)
+			self.endpoint = 'https://api.clever.com/v3.0/%ss/%s' % (self.user_type, self.userID)
 
 		# Redirect_uris are multi-use - with this if case, I'm cancelling user creation in the
 		# case where the user type is 'district' (for new district authorizations) or an 
@@ -125,6 +126,18 @@ class User(object):
 		# to pull that data from the JSON object. If not, leave that as None
 		if 'middle' in r['data']['name']:
 			self.name['middle'] = r['data']['name']['middle']
+
+		self.user_roles = r['data']['roles']
+		self.user_role = None
+
+		if 'student' in self.user_roles:
+			self.user_role = 'student'
+		elif 'teacher' in self.user_roles:
+			self.user_role = 'teacher'
+		elif 'staff' in self.user_roles:
+			self.user_role = 'staff'	
+		elif 'district_admin' in self.user_roles:
+			self.user_role = 'district admin'
 
 		return self
 
@@ -182,7 +195,7 @@ def code_exchange():
         return "Token request fail"
     print("Received Token %s" % ilToken)
 
-    me = cleverGET('https://api.clever.com/v2.1/me/',ilToken)
+    me = cleverGET('https://api.clever.com/v3.0/me/',ilToken)
 				
     print(me)
 
@@ -193,7 +206,7 @@ def code_exchange():
 
     # Store user info in the session so it can be accessed by all pages
     session['firstName'] = newUser.name['first']
-    session['userType'] = newUser.user_type
+    session['userRole'] = newUser.user_role
 
     # Redirect to home page
     return redirect(url_for('home'))
@@ -205,7 +218,7 @@ def home():
     if 'firstName' not in session:
         return redirect(url_for('index'))
 
-    return render_template('home.html', firstName=session['firstName'], userType=session['userType'])
+    return render_template('home.html', firstName=session['firstName'], userRole=session['userRole'])
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000)
